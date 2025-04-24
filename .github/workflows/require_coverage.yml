@@ -1,0 +1,44 @@
+name: Coverage Check on PR
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    env:
+      COV_MIN: 0
+    container:
+      image: node:22
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run cover:report
+
+      - name: Run coverage extraction script
+        id: extract_coverage
+        run: |
+          COVERAGE=$(
+          node -e "
+          const fs = require('fs');
+          const { extractCoverage } = require('@nicolawealth/code_coverage_extractor');
+          const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-final.json', 'utf-8'))
+          const result = extractCoverage(coverageData, './codecov/badge.json');
+          console.log(result);
+          ")
+          COVERAGE=$(echo $COVERAGE | xargs)
+          echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
+      
+      - name: Confirm Coverage Value
+        run: |
+          # Check if the coverage value is 100% and fail if it's not
+          if [ "$COVERAGE" -ne 100 ]; then
+            echo "Assertion failed: Coverage is not 100% (Actual: $COVERAGE%)"
+            exit 1
+          else
+            echo "Assertion passed: Coverage is 100%"
+          fi
