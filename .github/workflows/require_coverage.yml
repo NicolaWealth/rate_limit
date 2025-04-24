@@ -36,7 +36,7 @@ jobs:
       - name: Confirm Coverage Value
         run: |
           # Check if the coverage value is 100% and fail if it's not
-          if [ "$COVERAGE" -ne 100 ]; then
+            if [ "$(echo "$COVERAGE != 100.0" | bc -l)" -eq 1 ]; then
             echo "Assertion failed: Coverage is not 100% (Actual: $COVERAGE%)"
             exit 1
           else
