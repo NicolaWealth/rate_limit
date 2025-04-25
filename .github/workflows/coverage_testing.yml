@@ -1,0 +1,66 @@
+name: Automatic Coverage Reporting Upon Merge
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      COV_MIN: 0
+    container:
+      image: node:22
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          node-version: 22
+      - run: npm ci
+      - run: npm run cover:report
+
+      - name: Run coverage extraction script
+        id: extract_coverage
+        run: |
+          COVERAGE=$(
+          node -e "
+          const fs = require('fs');
+          const { extractCoverage } = require('@nicolawealth/code_coverage_extractor');
+          const coverageData = JSON.parse(fs.readFileSync('./coverage/coverage-final.json', 'utf-8'))
+          const result = extractCoverage(coverageData, './codecov/badge.json');
+          console.log(result);
+          ")
+          COVERAGE=$(echo $COVERAGE | xargs)
+          echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
+
+      - name: Print Coverage Value
+        run: |
+          echo "Coverage Value is: ${{ env.COVERAGE }}"
+
+      - name: Set Git user identity
+        run: |
+          git config --global user.email "software@nicolawealth.com"
+          git config --global user.name "actlion"
+
+      - name: Mark the repository as safe
+        run: git config --global --add safe.directory /__w/[PACKAGE_NAME]/[PACKAGE_NAME]
+
+      - name: Verify remote URL
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}.git
+          echo "Current remote URL:"
+          git remote -v
+
+      - name: Push changes to main
+        run: |
+          git status
+          if ! git diff --quiet codecov/badge.json; then
+            git add codecov/badge.json
+            git commit -m "Automated commit"
+            git push origin main
+          fi
