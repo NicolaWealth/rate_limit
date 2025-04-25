@@ -1,7 +1,6 @@
-import {DateTime} from "luxon";
 import {ioc} from "@nicolawealth/ioc";
 
-const nowMs = (): number => DateTime.now().toUTC().toMillis();
+const nowMs = (): number => Date.now();
 type setTimeoutType = <R>(f: () => void, ms: number) => R;
 const setTimeout: setTimeoutType = (f, ms) => setTimeout(f, ms);
 

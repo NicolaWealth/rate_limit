@@ -79,7 +79,7 @@ describe('rateLimitEmitLastFactory', () => {
   const setup = () => {
     const {nowMs, setTimeout} = getTimeoutStub();
 
-    // The rate limiter gives us a rate-limited wrapper around the the function we pass it.
+    // The rate limiter gives us a rate-limited wrapper around the function we pass it.
     const delayBetweenCallsMsMock = 100;
     const fStub: any = (arg: any) => {
       fStub.lastCalledWith = arg;
@@ -142,7 +142,7 @@ describe('rateLimitEmitLastFactory', () => {
     assert.strictEqual(setTimeout.delay, 90);
 
     nowMs.returnValue = 2000; // well past the rate limit
-    setTimeout.callback(); // simulating a long-running callback to set up the problemastic race condition
+    setTimeout.callback(); // simulating a long-running callback to set up the problematic race condition
     await rateLimitedF('third call'); // call while waiting for the previous call's callback
 
     // since we've past the rate limit, we would normally expect 'third call' to go straight through,

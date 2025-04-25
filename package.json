@@ -47,12 +47,10 @@
   },
   "dependencies": {
     "@nicolawealth/ioc": "^1.0.0",
-    "@nicolawealth/resolved_promise": "^0.0.2",
-    "luxon": "^3.6.1"
+    "@nicolawealth/resolved_promise": "^0.0.2"
   },
   "devDependencies": {
     "@nicolawealth/code_coverage_extractor": "^2",
-    "@types/luxon": "^3",
     "@types/mocha": "^9",
     "@types/node": "^22",
     "@types/sinon": "^10",
