@@ -1,7 +1,10 @@
 import {ioc} from "@nicolawealth/ioc";
 
+/* istanbul ignore next -- global constructs */
 const nowMs = (): number => Date.now();
+/* istanbul ignore next -- global constructs */
 type setTimeoutType = <R>(f: () => void, ms: number) => R;
+/* istanbul ignore next -- global constructs */
 const setTimeout: setTimeoutType = (f, ms) => setTimeout(f, ms);
 
 const deps = {nowMs, setTimeout};
