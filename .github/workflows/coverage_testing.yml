@@ -48,7 +48,7 @@ jobs:
           git config --global user.name "actlion"
 
       - name: Mark the repository as safe
-        run: git config --global --add safe.directory /__w/[PACKAGE_NAME]/[PACKAGE_NAME]
+        run: git config --global --add safe.directory /__w/rate_limit/rate_limit
 
       - name: Verify remote URL
         run: |
