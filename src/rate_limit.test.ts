@@ -3,6 +3,8 @@ import {rateLimitFactory, rateLimitEmitLastFactory} from './rate_limit';
 import {resolvedPromise} from '@nicolawealth/resolved_promise';
 import {ioc} from "@nicolawealth/ioc";
 
+type FStubType = (() => void) & { callCount: number };
+
 function getTimeoutStub() {
   const nowMs = () => nowMs.returnValue;
   nowMs.returnValue = 1000;
@@ -35,7 +37,7 @@ describe('rateLimitFactory', () => {
     fStub.callCount = 0;
     let rateLimitedF = rateLimitFactory(100, fStub);
 
-    return {nowMs, setTimeout, fStub, rateLimitedF};
+    return {nowMs, setTimeout, fStub: fStub as FStubType /* TS can't tell callCount always exists */, rateLimitedF};
   };
 
   it('Happy path', async () => {
@@ -123,7 +125,7 @@ describe('rateLimitEmitLastFactory', () => {
     assert.strictEqual(fStub.callCount, 2);
     assert.strictEqual(fStub.lastCalledWith, 'third call');
 
-    // After a bit more time has elapsed we should again be able to get a call through,
+    // After a bit more time has elapsed, we should again be able to get a call through,
     // this is essentially identical to the first call we made
     nowMs.returnValue = 2000;
     await rateLimitedF('fourth call');

@@ -1,6 +1,6 @@
 {
   "name": "@nicolawealth/rate_limit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.umd.js",
   "unpkg": "./dist/index.umd.js",

@@ -33,9 +33,11 @@ export const rateLimitFactory =
     };
   };
 
-// rateLimitEmitLast wraps an async function f and "rate limits" calls to it
-// ensures f is called at most once every delayBetweenCallsMs
-// ensures the last call made to rateLimitedF in the last delayBetweenCallsMs is the one forwarded to callF
+// rateLimitEmitLast wraps an async function `f` and applies rate limiting.
+// It guarantees:
+// 1. `f` is invoked at most once every `delayBetweenCallsMs`.
+// 2. If multiple calls occur within the delay window to rateLimitedF, only the most recent call is  forwarded to callF (executed) after the delay.
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const rateLimitEmitLastFactory = <TP, TR>(delayBetweenCallsMs: number, f: (params: TP) => Promise<TR>, callback: (last: TR) => void) => {
   let last = deps.nowMs() - delayBetweenCallsMs;
@@ -54,14 +56,14 @@ export const rateLimitEmitLastFactory = <TP, TR>(delayBetweenCallsMs: number, f:
     const now = deps.nowMs();
     const since = now - last;
 
-    // since this is a recursive timeout call we name it
+    // since this is a recursive timeout call, we name it
     const callF = async () => {
       const paramsVersionIssued = lastParamsVersion;
       callback(await f(lastParams));
       last = deps.nowMs(); // update to time when last call completed.
 
       if (paramsVersionIssued !== lastParamsVersion) {
-        // edge case, lastParams was updated while we waited on f to complete
+        // edge case, lastParams was updated while we waited on f to complete,
         // so schedule another call to f for later using those params (or newer ones)
         timeoutHandle = deps.setTimeout(callF, delayBetweenCallsMs);
       } else {
