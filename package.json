@@ -32,9 +32,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "secure-install": "npm install --no-audit --save-dev npm-audit-resolver@^3.0.0-RC.0 && npx check-audit && npm install",
-    "clean": "rm -rf dist/* && rm -f tsconfig.tsbuildinfo",
     "build": "microbundle --format umd",
+    "clean": "rm -rf dist/* && rm -f tsconfig.tsbuildinfo",
     "rename:esm": "/bin/zsh ./scripts/fix-mjs.sh",
     "lint": "eslint src",
     "test": "mocha",
