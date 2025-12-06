@@ -49,7 +49,7 @@
   "devDependencies": {
     "@nicolawealth/code_coverage_extractor": "^2",
     "@nicolawealth/resolved_promise": "^0.0.2",
-    "@types/mocha": "^9",
+    "@types/mocha": "^10",
     "@types/node": "^22",
     "eslint": "^9.4.0",
     "microbundle": "^0.15.1",
