@@ -38,7 +38,7 @@ export const rateLimitFactory =
 // 1. `f` is invoked at most once every `delayBetweenCallsMs`.
 // 2. If multiple calls occur within the delay window to rateLimitedF, only the most recent call is  forwarded to callF (executed) after the delay.
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
 export const rateLimitEmitLastFactory = <TP, TR>(delayBetweenCallsMs: number, f: (params: TP) => Promise<TR>, callback: (last: TR) => void) => {
   let last = deps.nowMs() - delayBetweenCallsMs;
   let timeoutHandle: unknown;

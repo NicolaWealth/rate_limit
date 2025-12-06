@@ -1,40 +1,36 @@
+
 {
   "name": "@nicolawealth/rate_limit",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "source": "src/index.ts",
+
   "main": "./dist/index.umd.js",
-  "module": "./dist/index.umd.js",
+  "module": "./dist/index.modern.js",
   "unpkg": "./dist/index.umd.js",
   "types": "./dist/types/index.d.ts",
-  "source": "src/index.ts",
+
   "exports": {
     ".": {
       "require": "./dist/index.umd.js",
-      "import": "./dist/index.umd.js"
+      "import": "./dist/index.modern.js",
+      "types": "./dist/types/index.d.ts"
     }
   },
-  "files": [
-    "dist/"
-  ],
+
+  "files": ["dist/"],
+
   "author": "Nicola Wealth Inc",
   "contributors": [
-    {
-      "name": "Cliff Hammerschmidt"
-    },
-    {
-      "name": "Skye Haik"
-    },
-    {
-      "name": "Travis Rempel"
-    },
-    {
-      "name": "Mel Delosada"
-    }
+    { "name": "Cliff Hammerschmidt" },
+    { "name": "Skye Haik" },
+    { "name": "Travis Rempel" },
+    { "name": "Mel Delosada" }
   ],
   "license": "MIT",
+
   "scripts": {
-    "build": "microbundle --format umd",
-    "clean": "rm -rf dist/* && rm -f tsconfig.tsbuildinfo",
-    "rename:esm": "/bin/zsh ./scripts/fix-mjs.sh",
+    "build": "microbundle --format umd,modern --globals @nicolawealth/ioc=ioc && tsc --emitDeclarationOnly --declaration --outDir dist/types",
+    "clean": "rimraf dist/* tsconfig.tsbuildinfo node_modules/.rpt2_cache",
     "lint": "eslint src",
     "test": "mocha",
     "test-r": "mocha -R spec",
@@ -43,29 +39,29 @@
     "doc": "npx typedoc src/*.ts src/**/*.ts --out dist/doc",
     "check-audit": "check-audit"
   },
-  "engines": {
-    "node": ">=22"
+
+  "engines": { "node": ">=18" },
+
+  "peerDependencies": {
+    "@nicolawealth/ioc": "^1.0.0"
   },
-  "dependencies": {
-    "@nicolawealth/ioc": "^1.0.0",
-    "@nicolawealth/resolved_promise": "^0.0.2"
-  },
+
   "devDependencies": {
     "@nicolawealth/code_coverage_extractor": "^2",
-    "@types/mocha": "^9",
+    "@nicolawealth/resolved_promise": "^0.0.2",
+    "@types/mocha": "^10",
     "@types/node": "^22",
-    "@types/sinon": "^10",
-    "@typescript-eslint/eslint-plugin": "^8",
-    "eslint": "^9",
-    "eslint-config-turbo": "^2",
+    "eslint": "^9.4.0",
     "microbundle": "^0.15.1",
-    "mocha": "^10",
+    "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2",
     "npm-audit-resolver": "^3.0.0-RC.0",
-    "nyc": "^15",
-    "sinon": "^19",
+    "nyc": "^15.1.0",
+    "rimraf": "^3.0.2",
     "ts-node": "^10",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.48.1"
   },
+
   "packageManager": "npm@10.9.0"
 }
