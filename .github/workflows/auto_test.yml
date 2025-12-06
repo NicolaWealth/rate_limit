@@ -22,10 +22,11 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}-
 
+      # We ignore regular audit failures for now, next step we run check-audit
       - name: Install dependencies (ci, no audit)
         run: npm ci --no-audit
 
-      # Optional: run your security gate before tests/build
+      # Run security gate before tests/build
       - name: Check audit
         run: npx check-audit --fail-on-unresolved
 
