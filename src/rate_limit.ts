@@ -1,4 +1,6 @@
-import {ioc} from "@nicolawealth/ioc";
+// support that ioc is only exporting CJS
+import iocPkg from "@nicolawealth/ioc";
+const { ioc } = iocPkg;
 
 /* istanbul ignore next -- global constructs */
 const nowMs = (): number => Date.now();
@@ -37,7 +39,6 @@ export const rateLimitFactory =
 // It guarantees:
 // 1. `f` is invoked at most once every `delayBetweenCallsMs`.
 // 2. If multiple calls occur within the delay window to rateLimitedF, only the most recent call is  forwarded to callF (executed) after the delay.
-
 
 export const rateLimitEmitLastFactory = <TP, TR>(delayBetweenCallsMs: number, f: (params: TP) => Promise<TR>, callback: (last: TR) => void) => {
   let last = deps.nowMs() - delayBetweenCallsMs;
