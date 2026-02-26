@@ -2,43 +2,124 @@
 ![Code Cov](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fnicolawealth%2Frate_limit%2Fraw%2Fmain%2Fcodecov/badge.json&query=%24.message&label=Code%20Coverage&color=%24.color)
 
 # Introduction
-The `rate_limit` package provides utility for rate limiting function calls to control the frequency of function execution and manage the timing of calls efficiently.
+A lightweight utility for rate-limiting function calls in JavaScript/TypeScript. It helps control execution frequency and manage timing for synchronous and asynchronous operations.
 
 # Installation
-This package should be installed via npm. You must have npm installed first. The following can be run on the commandline to install the `rate_limit` package with npm:
+Requires Node.js ≥ 18.
 
+Install via npm:
 `npm install @nicolawealth/rate_limit`
 
-# Usage
-The functionality provided by the `rate_limit` package is useful in limiting function call frequency in a variety of scenarios, including but not limited to:
-* API calls
-* Event handling
-* Message logging
-* Async data fetching
-* UI updates
-* etc.
+## Peer Dependency
+This package relies on @nicolawealth/ioc as a peer dependency. It will not be bundled with rate_limit, so you need to install it in your project:
+`npm install @nicolawealth/ioc`
+
+# Compatibility Notes
+The rate_limit package ships with two build formats:
+
+### ESM (Modern)
+#### (dist/index.modern.js)
+
+Recommended for modern bundlers like Webpack, Vite, or Rollup.
+Install both packages via npm & import:
+```ts
+import { rateLimitFactory } from '@nicolawealth/rate_limit';
+import { ioc } from '@nicolawealth/ioc';
+```
+### UMD 
+#### (dist/index.umd.js)
+Suitable for script-tag usage in browsers or environments without module loaders.
+If you use the UMD build, you must ensure the peer dependency `@nicolawealth/ioc` is loaded first and exposed globally as `window.ioc`.
+
+Example:
+```html 
+<script src="path/to/ioc.umd.js"></script>
+<script src="path/to/rate_limit.umd.js"></script>
+```
+The UMD bundle will reference ioc as a global variable.
+
+# Why Use rate_limit?
+Rate limiting is essential for:
+- Preventing API overload
+- Throttling expensive operations
+- Managing UI updates efficiently
+- Handling rapid event streams
+- Reducing redundant async calls
 
 # Interface
-The package exports two functions: `rateLimitFactory(delayBetweenCallsMs, function())` and `rateLimitEmitLastFactory(delayBetweenCallsMs, asyncFunction(params), callback(last))`:
+The package exports two functions: 
+- `rateLimitFactory(delayBetweenCallsMs, function())` and 
+- `rateLimitEmitLastFactory(delayBetweenCallsMs, asyncFunction(params), callback(last))`:
 
+# Exports
 ## RateLimitFactory
-`rateLimitFactory(delayBetweenCallsMs, function)` returns a parameterless function (referred to as `rateLimitedFunction()`) which ensures `function()` is called at most once every `delayBetweenCallsMs` milliseconds. Here `function()` must be a parameterless, void function.
-* If we call `rateLimitedFunction()` once, `function()` is called right away. 
-* If we make a second call before `delayBetweenCallsMs` milliseconds have passed, the call will be scheduled for later (deferred). 
-* If a third call is made to `rateLimitedFunction()` before `delayBetweenCallsMs` milliseconds have passed from the original call, the call will be ignored. I.e. only one call is scheduled at a time with priority given to the oldest. 
+Creates a wrapper that ensures fn() runs at most once every delayBetweenCallsMs milliseconds.
+### Behavior:
+
+- The first call executes immediately.
+- Subsequent calls within the delay window:
+  - One deferred call is scheduled.
+  - Additional calls are ignored until the scheduled call runs.
+### Example
+```ts
+import { rateLimitFactory } from '@nicolawealth/rate_limit';
+
+const log = () => console.log('Action!');
+const rateLimitedLog = rateLimitFactory(1000, log);
+
+rateLimitedLog(); // Executes immediately
+rateLimitedLog(); // Deferred
+rateLimitedLog(); // Ignored
+```
 
 ## RateLimitEmitLastFactory
-`rateLimitEmitLastFactory(delayBetweenCallsMs, asyncFunction(params), callback(last))` returns a function (referred to as `rateLimitedEmitLastFunction(params)`) which ensures `asyncFunction(params)` is called at most once every `delayBetweenCallsMs` milliseconds. Here `asyncFunction(params)` is an asynchronous function with parameters denoted by `params`.
-* If we call `rateLimitedEmitLastFunction(paramsOne)` once, `asyncFunction(paramsOne)` is called right away.
-* If we make a second call, `rateLimitedEmitLastFunction(paramsTwo)` before `delayBetweenCallsMs` milliseconds have passed, the call `asyncFunction(paramsTwo)` will be scheduled for later (deferred).
-* If a third call is made to `rateLimitedEmitLastFunction(paramsThree)` before `delayBetweenCallsMs` milliseconds have passed from the original call, the deferred call will be replaced and `asyncFunction(paramsThree)` will be scheduled for later. I.e. only one call is scheduled at a time with priority given to the latest arguments: `params`.
-Here, `callback(last)` is the provided callback function which consumes and processes the results of the calls to `asyncFunction(params)` where . A simple callback function could be set-up as follows:
-```
-const callback = (data: string) => {
-  console.log(data);
+Wraps an async function so it runs at most once per delay window, but always processes the latest parameters.
+### Behavior:
+
+- The first call executes immediately.
+- Subsequent calls within the delay window:
+    - Only the most recent parameters are retained.
+    - Deferred execution uses the latest arguments.
+- callback(result) is invoked after each execution.
+### Example
+```ts
+import { rateLimitEmitLastFactory } from '@nicolawealth/rate_limit';
+
+const fetchData = async (query: string) => {
+  // Simulate API call
+  return `Result for ${query}`;
 };
+
+const handleResult = (data: string) => console.log(data);
+
+const rateLimitedFetch = rateLimitEmitLastFactory(2000, fetchData, handleResult);
+
+rateLimitedFetch('first');  // Executes immediately
+rateLimitedFetch('second'); // Deferred, replaces previous
+rateLimitedFetch('third');  // Deferred, replaces previous
 ```
 
 # Testing
-Tests can be found in `rate_limit.test.ts` located in `rate_limit/src` and should be run with sinon, mocha and nyc.
+Tests are located in `src/rate_limit.test.ts` and use:
+- Mocha for test runner
+- Sinon for mocking timers
+- NYC for coverage
 
+Run tests:
+```shell
+npm run test
+```
+or for robust output:
+```shell
+npm run test-r
+```
+Run coverage:
+```shell
+npm run coverage
+```
+
+# Development notes
+- `npm run clean`: Removes dist/ folder & caches
+- `npm run build`: Builds both formats
+- `npm run lint`: Runs ESLint
+- `npm run docs`: Generates documentation
