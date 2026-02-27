@@ -1,7 +1,7 @@
 
 {
   "name": "@nicolawealth/rate_limit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "source": "src/index.ts",
 
   "main": "./dist/index.umd.js",
