@@ -71,7 +71,7 @@ Rate limiting is essential for:
 The package exports two functions:
 
 - `rateLimitFactory(delayBetweenCallsMs, function())` and
-- `rateLimitEmitLastFactory(delayBetweenCallsMs, asyncFunction(params), callback(last))`:
+- `rateLimitEmitLastFactory(delayBetweenCallsMs, asyncFunction(params), callback(result))`:
 
 ## Exports
 
