@@ -155,7 +155,13 @@ npm run test-r
 Run coverage:
 
 ```shell
-npm run coverage
+npm run cover
+```
+
+For detailed HTML/LCOV output:
+
+```shell
+npm run cover:report
 ```
 
 ## Development notes
@@ -163,4 +169,4 @@ npm run coverage
 - `npm run clean`: Removes dist/ folder & caches
 - `npm run build`: Builds both formats
 - `npm run lint`: Runs ESLint
-- `npm run docs`: Generates documentation
+- `npm run doc`: Generates documentation
