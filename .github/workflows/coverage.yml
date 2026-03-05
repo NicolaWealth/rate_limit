@@ -1,0 +1,77 @@
+name: Coverage
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+
+      - name: Node Setup
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Dependencies
+        run: npm ci
+
+      - name: Coverage Report
+        run: npm run cover:report
+        env:
+          NODE_OPTIONS: --experimental-vm-modules
+          TS_NODE_PROJECT: tsconfig.cjs.json
+
+      - name: Coverage Extraction
+        run: npm run cover:extract
+
+      - name: Upload Badge Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: codecov/badge.json
+
+  badge_update:
+    name: Badge Update
+    if: github.event_name == 'push'
+    needs: check
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ github.token }}
+
+      - name: Download Badge Artifact into codecov/
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-badge
+          path: codecov/
+
+      - name: Commit Badge
+        run: |
+          git config --global user.email "software@nicolawealth.com"
+          git config --global user.name "actlion"
+          git remote set-url origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+          if ! git diff --quiet codecov/badge.json; then
+            git add codecov/badge.json
+            git commit -m "Update coverage badge"
+            git push origin ${{ github.ref_name }}
+          fi
