@@ -1,7 +1,7 @@
 
 {
   "name": "@nicolawealth/rate_limit",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "source": "src/index.ts",
 
   "repository": {
