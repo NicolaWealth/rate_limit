@@ -1,11 +1,11 @@
 # rate_limit
 
-<!-- markdownlint-disable-next-line MD013 -->
+<!-- markdownlint-disable MD013 -->
 
 ![Tests Passing](https://github.com/NicolaWealth/rate_limit/actions/workflows/test.yml/badge.svg)
-<!-- markdownlint-disable-next-line MD013 -->
-
 ![Code Cov](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fnicolawealth%2Frate_limit%2Fraw%2Fmain%2Fcodecov/badge.json&query=%24.message&label=Code%20Coverage&color=%24.color)
+
+<!-- markdownlint-enable MD013 -->
 
 Lightweight utility for rate-limiting function calls in JavaScript/TypeScript.
 It helps control execution frequency and manage timing for synchronous and
@@ -30,7 +30,7 @@ The rate_limit package ships with two build formats:
 
 ### ESM (Modern)
 
-#### (dist/index.modern.js)
+#### (dist/index.modern.mjs)
 
 Recommended for modern bundlers like Webpack, Vite, or Rollup.
 Install both packages via npm & import:

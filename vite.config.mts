@@ -1,4 +1,4 @@
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
@@ -6,16 +6,17 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'rateLimit',
       formats: ['es', 'umd'],
-      fileName: format => format === 'es' ? 'index.modern.js' : 'index.umd.js',
+      fileName: (format) =>
+        format === 'es' ? 'index.modern.mjs' : 'index.umd.js'
     },
     rollupOptions: {
       external: ['@nicolawealth/ioc'],
       output: {
         globals: {
-          '@nicolawealth/ioc': 'ioc',
-        },
-      },
+          '@nicolawealth/ioc': 'ioc'
+        }
+      }
     },
-    sourcemap: true,
-  },
+    sourcemap: true
+  }
 });
