@@ -1,7 +1,7 @@
 const covMin = process.env.COV_MIN || 100;
 
 module.exports = {
-  require: ['ts-node/register', '@cspotcode/source-map-support/register'],
+  require: ['ts-node/register'],
   cache: false,
   extension: ['.ts', '.tsx'],
   include: ['src/**/*.ts', 'src/**/*.tsx'],

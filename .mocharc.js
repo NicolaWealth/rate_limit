@@ -1,5 +1,5 @@
 module.exports = {
-  require: ['ts-node/register', '@cspotcode/source-map-support/register'],
+  require: ['ts-node/register'],
   reporter: 'xunit',
   'reporter-option': ['output=test-results.xml'],
   'full-trace': true,
