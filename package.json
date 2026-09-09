@@ -1,19 +1,15 @@
-
 {
   "name": "@nicolawealth/rate_limit",
   "version": "0.0.7",
   "source": "src/index.ts",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/NicolaWealth/rate_limit.git"
   },
-
   "main": "./dist/index.umd.js",
   "module": "./dist/index.modern.js",
   "unpkg": "./dist/index.umd.js",
   "types": "./dist/types/index.d.ts",
-
   "exports": {
     ".": {
       "require": "./dist/index.umd.js",
@@ -21,20 +17,27 @@
       "types": "./dist/types/index.d.ts"
     }
   },
-
-  "files": ["dist/"],
-
+  "files": [
+    "dist/"
+  ],
   "author": "Nicola Wealth Inc",
   "contributors": [
-    { "name": "Cliff Hammerschmidt" },
-    { "name": "Skye Haik" },
-    { "name": "Travis Rempel" },
-    { "name": "Mel Delosada" }
+    {
+      "name": "Cliff Hammerschmidt"
+    },
+    {
+      "name": "Skye Haik"
+    },
+    {
+      "name": "Travis Rempel"
+    },
+    {
+      "name": "Mel Delosada"
+    }
   ],
   "license": "MIT",
-
   "scripts": {
-    "build": "microbundle --format umd,modern --globals @nicolawealth/ioc=ioc && tsc --emitDeclarationOnly --declaration --outDir dist/types",
+    "build": "vite build && tsc -p tsconfig.types.json",
     "clean": "rimraf dist/* tsconfig.tsbuildinfo node_modules/.rpt2_cache",
     "lint": "eslint src",
     "test": "mocha",
@@ -45,29 +48,26 @@
     "doc": "npx typedoc src/*.ts src/**/*.ts --out dist/doc",
     "check-audit": "check-audit"
   },
-
-  "engines": { "node": ">=18" },
-
+  "engines": {
+    "node": ">=18"
+  },
   "peerDependencies": {
     "@nicolawealth/ioc": "^1.0.0"
   },
-
   "devDependencies": {
     "@nicolawealth/code_coverage_extractor": "^2",
     "@nicolawealth/resolved_promise": "^0.0.2",
     "@types/mocha": "^10",
     "@types/node": "^22",
     "eslint": "^9.4.0",
-    "microbundle": "^0.15.1",
-    "mocha": "^10.2.0",
-    "mocha-junit-reporter": "^2",
+    "mocha": "^12.0.0",
     "npm-audit-resolver": "^3.0.0-RC.0",
-    "nyc": "^15.1.0",
+    "nyc": "^18.0.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10",
     "typescript": "^5",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.48.1",
+    "vite": "^8.2.2"
   },
-
   "packageManager": "npm@10.9.0"
 }
