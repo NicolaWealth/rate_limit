@@ -1,8 +1,10 @@
 # rate_limit
 
 <!-- markdownlint-disable-next-line MD013 -->
+
 ![Tests Passing](https://github.com/NicolaWealth/rate_limit/actions/workflows/test.yml/badge.svg)
 <!-- markdownlint-disable-next-line MD013 -->
+
 ![Code Cov](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fnicolawealth%2Frate_limit%2Fraw%2Fmain%2Fcodecov/badge.json&query=%24.message&label=Code%20Coverage&color=%24.color)
 
 Lightweight utility for rate-limiting function calls in JavaScript/TypeScript.
@@ -11,7 +13,7 @@ asynchronous operations.
 
 ## Installation
 
-Requires Node.js ≥ 18.
+Requires Node.js ≥ 22.12.0.
 
 Install via npm:
 `npm install @nicolawealth/rate_limit`
@@ -34,8 +36,8 @@ Recommended for modern bundlers like Webpack, Vite, or Rollup.
 Install both packages via npm & import:
 
 ```ts
-import { rateLimitFactory } from '@nicolawealth/rate_limit';
-import { ioc } from '@nicolawealth/ioc';
+import { rateLimitFactory } from "@nicolawealth/rate_limit";
+import { ioc } from "@nicolawealth/ioc";
 ```
 
 ### UMD
@@ -90,9 +92,9 @@ delayBetweenCallsMs milliseconds.
 #### Example (RateLimitFactory)
 
 ```ts
-import { rateLimitFactory } from '@nicolawealth/rate_limit';
+import { rateLimitFactory } from "@nicolawealth/rate_limit";
 
-const log = () => console.log('Action!');
+const log = () => console.log("Action!");
 const rateLimitedLog = rateLimitFactory(1000, log);
 
 rateLimitedLog(); // Executes immediately
@@ -116,7 +118,7 @@ processes the latest parameters.
 #### Example (RateLimitEmitLastFactory)
 
 ```ts
-import { rateLimitEmitLastFactory } from '@nicolawealth/rate_limit';
+import { rateLimitEmitLastFactory } from "@nicolawealth/rate_limit";
 
 const fetchData = async (query: string) => {
   // Simulate API call
@@ -125,11 +127,15 @@ const fetchData = async (query: string) => {
 
 const handleResult = (data: string) => console.log(data);
 
-const rateLimitedFetch = rateLimitEmitLastFactory(2000, fetchData, handleResult);
+const rateLimitedFetch = rateLimitEmitLastFactory(
+  2000,
+  fetchData,
+  handleResult,
+);
 
-rateLimitedFetch('first');  // Executes immediately
-rateLimitedFetch('second'); // Deferred, replaces previous
-rateLimitedFetch('third');  // Deferred, replaces previous
+rateLimitedFetch("first"); // Executes immediately
+rateLimitedFetch("second"); // Deferred, replaces previous
+rateLimitedFetch("third"); // Deferred, replaces previous
 ```
 
 ## Testing
