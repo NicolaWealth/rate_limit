@@ -36,8 +36,8 @@ Recommended for modern bundlers like Webpack, Vite, or Rollup.
 Install both packages via npm & import:
 
 ```ts
-import { rateLimitFactory } from "@nicolawealth/rate_limit";
-import { ioc } from "@nicolawealth/ioc";
+import { rateLimitFactory } from '@nicolawealth/rate_limit';
+import { ioc } from '@nicolawealth/ioc';
 ```
 
 ### UMD
@@ -92,9 +92,9 @@ delayBetweenCallsMs milliseconds.
 #### Example (RateLimitFactory)
 
 ```ts
-import { rateLimitFactory } from "@nicolawealth/rate_limit";
+import { rateLimitFactory } from '@nicolawealth/rate_limit';
 
-const log = () => console.log("Action!");
+const log = () => console.log('Action!');
 const rateLimitedLog = rateLimitFactory(1000, log);
 
 rateLimitedLog(); // Executes immediately
@@ -118,7 +118,7 @@ processes the latest parameters.
 #### Example (RateLimitEmitLastFactory)
 
 ```ts
-import { rateLimitEmitLastFactory } from "@nicolawealth/rate_limit";
+import { rateLimitEmitLastFactory } from '@nicolawealth/rate_limit';
 
 const fetchData = async (query: string) => {
   // Simulate API call
@@ -133,9 +133,9 @@ const rateLimitedFetch = rateLimitEmitLastFactory(
   handleResult,
 );
 
-rateLimitedFetch("first"); // Executes immediately
-rateLimitedFetch("second"); // Deferred, replaces previous
-rateLimitedFetch("third"); // Deferred, replaces previous
+rateLimitedFetch('first'); // Executes immediately
+rateLimitedFetch('second'); // Deferred, replaces previous
+rateLimitedFetch('third'); // Deferred, replaces previous
 ```
 
 ## Testing
