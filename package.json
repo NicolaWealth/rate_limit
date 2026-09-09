@@ -49,7 +49,7 @@
     "check-audit": "check-audit"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12.0"
   },
   "peerDependencies": {
     "@nicolawealth/ioc": "^1.0.0"
