@@ -21,7 +21,7 @@ jobs:
       - name: Node Setup
         uses: actions/setup-node@v6
         with:
-          node-version: '22.17.1'
+          node-version: '22.23.4'
           cache: 'npm'
 
       - name: Dependencies
